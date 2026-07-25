@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "web-attack-toolkit"
+version = "1.0.0"
+description = "Web-app testing: content discovery, fingerprint, SQLi, XSS"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [{ name = "Jimit Devangkumar Parikh" }]
+
+[project.urls]
+Homepage = "https://github.com/JIMIT-PARIKH-01/web-attack-toolkit"
+
+[project.scripts]
+webattack = "webattack.cli:main"
+
+[tool.setuptools]
+packages = ["webattack"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
