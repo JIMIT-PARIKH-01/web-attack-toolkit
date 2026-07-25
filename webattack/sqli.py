@@ -15,12 +15,22 @@ import urllib.parse
 import urllib.request
 from dataclasses import dataclass, field
 
-PAYLOADS = ["'", "\"", "')", "';", "' OR '1'='1", "1 OR 1=1", "' AND '1'='2"]
+PAYLOADS = ["'", "\"", "')", "';", "'--", "'))", "' OR '1'='1", "1 OR 1=1",
+            "' AND '1'='2", "\" OR \"1\"=\"1", "1)) OR ((1=1", "') OR ('1'='1"]
 
+# Database error fingerprints across the major engines (error-based detection).
 DB_ERRORS = re.compile(
-    r"(SQL syntax|mysql_fetch|mysqli?_|ORA-\d{5}|PostgreSQL.*ERROR|"
-    r"SQLServer|ODBC .*SQL|SQLite/JDBC|Warning.*\bpg_|unclosed quotation mark|"
-    r"quoted string not properly terminated|you have an error in your sql syntax)",
+    r"("
+    r"you have an error in your sql syntax|SQL syntax.*MySQL|mysql_fetch|mysqli?_|"
+    r"valid MySQL result|MySQL server version|supplied argument is not a valid MySQL|"        # MySQL
+    r"ORA-\d{5}|Oracle error|quoted string not properly terminated|"                          # Oracle
+    r"PostgreSQL.*ERROR|pg_query\(\)|pg_exec\(\)|syntax error at or near|PG::\w*Error|psycopg2|"  # PostgreSQL
+    r"Microsoft OLE DB Provider|Incorrect syntax near|Unclosed quotation mark|"
+    r"System\.Data\.SqlClient|SqlException|SQLServer JDBC Driver|"                             # MS SQL Server
+    r"SQLite/JDBC|SQLite3?::|sqlite3\.\w*Error|SQLITE_ERROR|unrecognized token|"               # SQLite
+    r"SQLSTATE\[|ODBC.*SQL|JDBC Driver|PDOException|DBD::\w+::st|"                              # generic
+    r"unterminated quoted string|Warning.*\bpg_|Dynamic SQL Error"
+    r")",
     re.IGNORECASE)
 
 
