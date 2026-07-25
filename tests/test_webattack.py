@@ -3,9 +3,20 @@
 from webattack import sqli, xss, fingerprint, dirbrute
 
 
-def test_sqli_error_regex_matches():
-    assert sqli.DB_ERRORS.search("You have an error in your SQL syntax near '1'")
-    assert sqli.DB_ERRORS.search("Warning: mysqli_query() failed")
+def test_sqli_error_regex_matches_many_dbs():
+    samples = [
+        "You have an error in your SQL syntax near '1'",       # MySQL
+        "Warning: mysqli_query() failed",                       # MySQL
+        "ORA-01756: quoted string not properly terminated",     # Oracle
+        "PostgreSQL query failed: ERROR: near",                 # PostgreSQL
+        "syntax error at or near \"'\"",                        # PostgreSQL
+        "Microsoft OLE DB Provider for SQL Server error",       # MSSQL
+        "Incorrect syntax near ')'",                            # MSSQL
+        "sqlite3.OperationalError: near syntax error",          # SQLite
+        "SQLSTATE[42000]: Syntax error",                        # PDO/generic
+    ]
+    for s in samples:
+        assert sqli.DB_ERRORS.search(s), s
     assert not sqli.DB_ERRORS.search("a perfectly normal web page")
 
 
