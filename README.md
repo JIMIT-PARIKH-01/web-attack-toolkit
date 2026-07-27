@@ -12,6 +12,8 @@ Web-application testing tools — **dependency-free**, GUI + CLI.
 
 Standard library only (`urllib`, `concurrent.futures`). Python 3.8+.
 
+![demo](docs/demo.png)
+
 ## ⚠️ AUTHORIZED TARGETS ONLY
 Content discovery, SQLi and XSS testing against systems you don't own or lack
 written permission to test **may be illegal**. Use on your own labs, deliberately
